@@ -7,6 +7,7 @@ for i in range(len(heritage)):
     heritage[i].bin2Dec()
     heritage[i].fitness()
     heritage[i].fittest_chro()
+    heritage[i].crossover()
 
 print(heritage[0].fittest)
 print(heritage[1].fittest)

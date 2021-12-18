@@ -42,10 +42,25 @@ class Population:
         for y in range(self.num):
             res = round(10000 / self.test[y], 4)
             
-            self.fit.append(res)
+            self.fit.append([self.chro[y], res])
             self.sum_fit += res
             
     def fittest_chro(self):
-        self.fit.sort(reverse = True)
-        for i in range(3):
-            self.fittest.append(self.fit[i])
+        arr_fit = []
+        for i in range(self.num):
+            arr_fit.append(self.fit[i][1])
+            
+        arr_fit.sort(reverse=True)
+        for x in range(2):
+            for y in range(self.num):
+                if(arr_fit[x] == self.fit[y][1]):
+                    self.fittest.append(self.fit[y][0])                    
+            
+    def crossover(self):
+        x = random.randrange(1, 19)
+        
+        x1 = self.fittest[0][:x]
+        x2 = self.fittest[1][x:]
+        
+        result = x1 + x2
+        print(result)
