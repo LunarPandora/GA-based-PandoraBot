@@ -1,66 +1,87 @@
 import random
 
 class Population:
-    def __init__(self, num):
+    def __init__(self, num, min, max):
         self.num = num
-        self.chro = []
-        self.dec_chro = []
-        self.test = []
-        self.avg = 0
-        self.fit = []
-        self.sum_fit = 0
+        self.min = min
+        self.max = max
+    
+    def population(self, chr):
+        chro = []
         
-        self.fittest = []
-        
-    def generateChromosome(self, length):
-        chromosome = ""
+        for i in range(self.num):
+            chro.append(self.generateChromosome(chr))
+            
+        return chro
+    
+    def generateChromosome(self, lth):
+        chromosome = []
 
-        for i in range(length):
-            chromosome += str(int(round(random.random(), 0)))
+        for i in range(lth):
+            chromosome.append(round(random.uniform(self.min, self.max), 4))
             
         return chromosome
     
-    def population(self):
-        for i in range(self.num):
-            # print(self.generateChromosome(20))
-            self.chro.append(self.generateChromosome(20))
-            
-    def bin2Dec(self):
-        for x in range(self.num):
-            self.dec_chro.append(int(self.chro[x], 2))
-            
-    def fitness(self):
-        for x in range(self.num):
-            i = self.dec_chro[x]
-            
-            fx = ((i / 25) + 15) * 3
-            self.test.append(fx)
-            self.avg += fx
+    def fx(self, chro):
+        fx_result = []
         
-        self.avg = self.avg / self.num
+        for x in range(len(chro)):
+            i = chro[x]
+            
+            fx = round(((i[0] / 25) + (i[1] / 15)) * 3, 4)
+            fx_result.append(fx)
+            
+        return fx_result
+            
+    def fitness(self, chro, fx):
+        fit = []
+        sum_fit = 0
         
-        for y in range(self.num):
-            res = round(10000 / self.test[y], 4)
+        for y in range(len(fx)):
+            res = round(1 / fx[y], 4)
             
-            self.fit.append([self.chro[y], res])
-            self.sum_fit += res
+            fit.append([chro[y], res])
+            sum_fit += res
             
-    def fittest_chro(self):
+        sum_fit = round(sum_fit, 4)
+        
+        return fit, sum_fit
+            
+    def fittest_chro(self, fit = [], min = 2):
         arr_fit = []
-        for i in range(self.num):
-            arr_fit.append(self.fit[i][1])
+        fittest = []
+        
+        for i in range(len(fit[0])):
+            arr_fit.append(fit[0][i][1])
             
         arr_fit.sort(reverse=True)
-        for x in range(2):
-            for y in range(self.num):
-                if(arr_fit[x] == self.fit[y][1]):
-                    self.fittest.append(self.fit[y][0])                    
+        
+        for x in range(min):
+            for y in range(len(fit[0])):
+                if(arr_fit[x] == fit[0][y][1]):
+                    fittest.append(fit[0][y][0])
+                    
+        return fittest
+                
+    def crossover(self, fittest = []):
+        a = random.uniform(-0.25, 1.25)
+        
+        c1x1 = round(fittest[0][0] + a * (fittest[1][0] - fittest[0][0]), 4)
+        c1x2 = round(fittest[0][1] + a * (fittest[1][1] - fittest[0][1]), 4)
+        c2x1 = round(fittest[1][0] + a * (fittest[0][0] - fittest[1][0]), 4)
+        c2x2 = round(fittest[1][1] + a * (fittest[0][1] - fittest[1][1]), 4)
+        
+        child = [[c1x1, c1x2], [c2x1, c2x2]]
+        
+        return child
+        
+    # def mutation(self, x):
+    #     for i in range(len(x)):
+    #         prob = random.random()
+    #         if(prob > 0.7): 
+    #             if(x[i] == "0"):
+    #                 x[i] == "1"
+    #             else:
+    #                 x[i] == "0"
             
-    def crossover(self):
-        x = random.randrange(1, 19)
-        
-        x1 = self.fittest[0][:x]
-        x2 = self.fittest[1][x:]
-        
-        result = x1 + x2
-        print(result)
+    #     return x
