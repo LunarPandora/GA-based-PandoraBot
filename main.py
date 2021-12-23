@@ -17,6 +17,8 @@ ps = parent_selection.ParentSelector()
 env = environment.Environment(POPULATION_SIZE, ps, population_factory, br)
 
 highest_fitness_list = []
+target = "yeah"
+
 while current_generation <= TOTAL_GENERATIONS:
     fittest = env.get_the_fittest(1)[0]
     if "0" not in fittest.genotype:

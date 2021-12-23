@@ -19,7 +19,7 @@ class IndividualFactory:
         self.binary_string_format = '{:0' + str(self.genotype_length) + 'b}'
         
     def with_random_genotype(self):
-        genotype_max_value = 2 ** self.genotype_length
+        genotype_max_value = self.genotype_length
         random_genotype = self.binary_string_format.format(random.randint(0, genotype_max_value))
         fitness = self.fitness_evaluator.evaluate(random_genotype)
         
