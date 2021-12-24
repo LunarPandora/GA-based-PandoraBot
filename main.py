@@ -2,7 +2,7 @@ import fitness_evaluator, genotype_decoder, individual_and_factory, population_a
 
 TOTAL_GENERATIONS = 10000
 POPULATION_SIZE = 50
-GENOTYPE_LENGTH = 30
+GENOTYPE_LENGTH = 7
 
 current_generation = 1
 
@@ -17,11 +17,15 @@ ps = parent_selection.ParentSelector()
 env = environment.Environment(POPULATION_SIZE, ps, population_factory, br)
 
 highest_fitness_list = []
+target = "Yeah"
+
 while current_generation <= TOTAL_GENERATIONS:
     fittest = env.get_the_fittest(1)[0]
+    
     if "0" not in fittest.genotype:
         print("Finished!")
         break
+    
     env.update()
     current_generation += 1
     
