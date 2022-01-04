@@ -18,5 +18,5 @@ class Environment:
         next_generation = self.breeder.produce_offspring(parents)
         self.population = self.population_factory.with_individuals(next_generation)
         
-    def get_the_fittest(self, n: int):
-        return self.population.get_the_fittest(n)
+    def get_the_fittest(self):
+        return self.population.get_fitness()
